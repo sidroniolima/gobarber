@@ -51,7 +51,7 @@ class AppointmentController {
       where: {
         provider_id,
         canceled_at: null,
-        date: hourStart,
+        date,
       },
     });
 
@@ -64,7 +64,7 @@ class AppointmentController {
     const appointment = await Appointment.create({
       user_id: req.userId,
       provider_id,
-      hourStart,
+      date: hourStart,
     });
 
     const user = await User.findByPk(req.userId);
@@ -88,7 +88,7 @@ class AppointmentController {
 
     const appointments = await Appointment.findAll({
       where: { user_id: req.userId, canceled_at: null },
-      attributes: ['id', 'date'],
+      attributes: ['id', 'date', 'past', 'cancelable'],
       order: ['date'],
       limit: 20,
       offset: (page - 1) * 20,
